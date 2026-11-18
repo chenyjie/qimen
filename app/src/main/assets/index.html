@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="奇门遁甲四盘罗盘：拆补法一键起局，天地人神四盘交互排盘，十干克应、八门克应、吉凶格局判断。" />
+<meta name="theme-color" content="#f5f4ed" />
+<title>奇门遁甲 · 四盘罗盘</title>
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/kami.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="eyebrow"><span class="tick"></span>司南 · Qimen Compass</div>
+      <div class="head-row">
+        <h1>奇门遁甲<span class="sub">四盘罗盘</span></h1>
+        <div class="meta">
+          <div class="line1">地盘 · 天盘 · 人盘 · 神盘</div>
+          <div class="line2">手动排盘 · 拖拽转环，松手落宫</div>
+        </div>
+      </div>
+      <div class="rule"></div>
+    </header>
+
+    <div class="main">
+      <div class="stage">
+        <div class="compass-box">
+          <svg id="compass" viewBox="0 0 1000 1000" aria-label="奇门遁甲罗盘"></svg>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card">
+          <h2>司盘 <span class="en">Controls</span></h2>
+          <div class="field-label">阴阳遁</div>
+          <div class="seg" id="modeSeg">
+            <button data-mode="yang" class="active">阳遁<span class="sub">顺布六仪</span></button>
+            <button data-mode="yin">阴遁<span class="sub">逆布六仪</span></button>
+          </div>
+          <div class="field-label">一键排盘 · 拆补法</div>
+          <div class="picker" id="datePicker">
+            <div class="cal-head">
+              <button class="cal-nav" id="calPrev" aria-label="上个月">◀</button>
+              <div class="cal-title-wrap">
+                <button class="cal-title-btn" id="calYearBtn">2026年</button>
+                <button class="cal-title-btn" id="calMonthBtn">8月</button>
+              </div>
+              <button class="cal-nav" id="calNext" aria-label="下个月">▶</button>
+            </div>
+            <div class="cal-pop" id="calPop" role="dialog"></div>
+            <div class="cal-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+            <div class="cal-grid" id="calGrid"></div>
+            <div class="time-row">
+              <div class="time-field" id="hourField">
+                <button class="time-btn" data-kind="h" data-dir="-1" aria-label="小时减">◀</button>
+                <span class="time-val" id="hourVal">00</span>
+                <button class="time-btn" data-kind="h" data-dir="1" aria-label="小时加">▶</button>
+                <em>时</em>
+              </div>
+              <div class="time-field" id="minField">
+                <button class="time-btn" data-kind="m" data-dir="-1" aria-label="分钟减">◀</button>
+                <span class="time-val" id="minVal">00</span>
+                <button class="time-btn" data-kind="m" data-dir="1" aria-label="分钟加">▶</button>
+                <em>分</em>
+              </div>
+            </div>
+            <div class="picker-actions">
+              <button class="btn-today" id="todayBtn">现在</button>
+              <button class="btn-paipan" id="paipanBtn">起局</button>
+            </div>
+          </div>
+          <div class="paipan-hint"><span class="mk">◆</span> 日历上滚动鼠标滚轮可前后旋转日期，跨月自动翻页。<br/><span class="mk">◆</span> 子时（23 点后）计次日，交节时刻前仍用上节气。</div>
+          <button class="btn-reset" id="resetBtn"><span class="ico">↺</span>复原</button>
+        </div>
+
+        <div class="card">
+          <h2>口诀 <span class="en">Notes</span></h2>
+          <div class="hint">
+            <b>拖拽</b>任意一环即可旋转，<b>松手</b>自动落入整宫。<br/>
+            环外<b>八宫名</b>与中心<b>洛书数</b>固定不动，作为对齐基准。<br/>
+            <span class="mk">◆</span> 顶部墨蓝指针指向<b>离九宫</b>（南）。<br/>
+            <span class="mk">◆</span> 中宫<b>五</b>寄坤二，天禽随天芮。
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="readout">
+      <div class="card">
+        <h2>当前盘面 <span class="en">Live Readout · 自离宫起顺时针</span></h2>
+        <div class="summary empty" id="paipanSummary"></div>
+        <table id="readoutTable"></table>
+        <div class="readout-note">
+          上表实时展开四环与八宫的当前叠合状态，<span class="zhu">墨蓝一列</span>为坎一宫（起甲之地）。
+          地盘随阴阳遁切换天干布序，神盘随阴阳遁顺逆布八神。
+        </div>
+      </div>
+    </section>
+
+    <section class="judgment">
+      <div class="card">
+        <h2>判断 <span class="en">Judgment · 点盘观应</span></h2>
+        <div class="judge-global" id="judgeGlobal"></div>
+        <div class="judge-hint"><span class="mk">◆</span> 点按盘面查看该宫判断；按住符号（0.5 秒）查看象数理；按住拖动旋转四环排盘。<br/><span class="mk">◆</span> 下方展示排盘后的全局格局（五不遇时 / 玉女守门 / 悖格等）。</div>
+        <div class="judge-body" id="judgeBody"></div>
+      </div>
+    </section>
+
+    <footer>奇门遁甲 · 四盘罗盘 —— 法以象显，数以盘推</footer>
+  </div>
+  <div class="tip" id="tip">
+    <button class="tip-close" id="tipClose" aria-label="关闭">✕</button>
+    <div id="tipBody"></div>
+  </div>
+<script src="data/qimen-data.js"></script>
+<script src="core/paipan.js"></script>
+<script src="core/judge.js"></script>
+<script src="ui/app.js"></script>
+</body>
+</html>
